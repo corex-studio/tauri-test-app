@@ -136,7 +136,12 @@ fn print_text(printer_name: String, text: String) -> Result<String, String> {
 
     #[cfg(target_os = "windows")]
     {
-        let temp_file = std::env::temp_dir().join(format!("print_{}.txt", uuid::Uuid::new_v4()));
+        use std::time::{SystemTime, UNIX_EPOCH};
+        let timestamp = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let temp_file = std::env::temp_dir().join(format!("print_{}.txt", timestamp));
         fs::write(&temp_file, text)
             .map_err(|e| format!("Failed to create temp file: {}", e))?;
 
@@ -145,6 +150,8 @@ fn print_text(printer_name: String, text: String) -> Result<String, String> {
             .arg(temp_file.to_str().unwrap())
             .output()
             .map_err(|e| format!("Failed to print: {}", e))?;
+
+        let _ = fs::remove_file(&temp_file);
 
         if output.status.success() {
             Ok("Print job sent successfully".to_string())
@@ -214,7 +221,7 @@ fn print_html(printer_name: String, html: String) -> Result<String, String> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_updater::Builder::new().build())
+        // .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![get_printers, print_text, print_html])
         .run(tauri::generate_context!())

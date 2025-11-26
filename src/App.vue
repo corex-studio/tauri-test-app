@@ -12,7 +12,9 @@ const selectedPrinter = ref<string>('');
 const loading = ref(false);
 const message = ref('');
 const printText = ref('Тестовый текст для печати');
-const printHtml = ref('<html><body><h1>Тестовая печать HTML</h1><p>Это тестовый HTML документ для печати.</p></body></html>');
+const printHtml = ref(
+  '<html><body><h1>Тестовая печать HTML</h1><p>Это тестовый HTML документ для печати.</p></body></html>'
+);
 
 async function loadPrinters() {
   loading.value = true;
@@ -88,9 +90,7 @@ onMounted(() => {
         </button>
       </div>
 
-      <div v-if="printers.length === 0 && !loading" class="empty-state">
-        Принтеры не найдены
-      </div>
+      <div v-if="printers.length === 0 && !loading" class="empty-state">Принтеры не найдены</div>
 
       <div v-else class="printers-list">
         <div
@@ -108,12 +108,7 @@ onMounted(() => {
 
     <div class="section">
       <h2>Печать текста</h2>
-      <textarea
-        v-model="printText"
-        placeholder="Введите текст для печати"
-        class="text-input"
-        rows="4"
-      ></textarea>
+      <textarea v-model="printText" placeholder="Введите текст для печати" class="text-input" rows="4"></textarea>
       <button @click="printTextDocument" :disabled="loading || !selectedPrinter" class="print-btn">
         Печать текста
       </button>
@@ -121,15 +116,8 @@ onMounted(() => {
 
     <div class="section">
       <h2>Печать HTML</h2>
-      <textarea
-        v-model="printHtml"
-        placeholder="Введите HTML для печати"
-        class="text-input"
-        rows="6"
-      ></textarea>
-      <button @click="printHtmlDocument" :disabled="loading || !selectedPrinter" class="print-btn">
-        Печать HTML
-      </button>
+      <textarea v-model="printHtml" placeholder="Введите HTML для печати" class="text-input" rows="6"></textarea>
+      <button @click="printHtmlDocument" :disabled="loading || !selectedPrinter" class="print-btn">Печать HTML</button>
     </div>
 
     <div v-if="message" class="message" :class="{ error: message.includes('Ошибка') }">
