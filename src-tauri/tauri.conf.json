@@ -22,6 +22,7 @@
     }
   },
   "bundle": {
+    "createUpdaterArtifacts": true,
     "active": true,
     "targets": "all",
     "icon": [
@@ -31,5 +32,15 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDYwQjJGNTlDNEIxRkI2MDMKUldRRHRoOUxuUFd5WUJNVmVPd0t4VmVaRnoxWkRYMWQ4bnA4QjhFY1k2NnNFbFpRWksvNlN6ZU8K",
+      "endpoints": [
+      ]
+    },
+    "windows": {
+      "installMode": "passive"
+    }
   }
 }
