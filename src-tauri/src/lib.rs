@@ -218,13 +218,18 @@ fn print_html(printer_name: String, html: String) -> Result<String, String> {
     }
 }
 
+#[tauri::command]
+fn get_app_version() -> Result<String, String> {
+    Ok(env!("CARGO_PKG_VERSION").to_string())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_process::init())
-        .invoke_handler(tauri::generate_handler![get_printers, print_text, print_html])
+        .invoke_handler(tauri::generate_handler![get_printers, print_text, print_html, get_app_version])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
